@@ -35,24 +35,105 @@ class SearchViewController: UIViewController {
         static let searchResultCell = "SearchResultCell"
         static let nothingFoundCell = "NothingFoundCell"
     }
+    
+    func urlWithSearchText(searchText: String) -> NSURL {
+        let escapedText = searchText.stringByAddingPercentEncodingWithAllowedCharacters(NSCharacterSet.URLQueryAllowedCharacterSet())!
+        let urlString = String(format: "https://itunes.apple.com/search?term=%@", escapedText)
+        let url = NSURL(string: urlString)
+        return url!
+    }
+    
+    func performStoreRequestWithURL(url: NSURL) -> String? {
+        do {
+            return try String(contentsOfURL: url, encoding: NSUTF8StringEncoding)
+        } catch {
+            print("Download error: \(error)")
+            return nil
+        }
+    }
+    
+    func parseJSON(jsonString: String) -> [String:AnyObject]? {
+        guard let data = jsonString.dataUsingEncoding(NSUTF8StringEncoding) else {
+            return nil
+        }
+        do {
+            return try NSJSONSerialization.JSONObjectWithData(data, options: []) as? [String:AnyObject]
+        } catch {
+            print("JSON error: \(error)")
+            return nil
+        }
+    }
+    
+    func showNetworkError() {
+        let alert = UIAlertController(title: "Whoops...", message: "There was an error reading from the iTunes Store. Please try again.", preferredStyle: .Alert)
+        let action = UIAlertAction(title: "OK", style: .Default, handler: nil)
+        alert.addAction(action)
+        presentViewController(alert, animated: true, completion: nil)
+    }
+    
+    func parseDictionary(dictionary: [String:AnyObject]) -> [SearchResult] {
+        guard let array = dictionary["results"] as? [AnyObject] else {
+            print("Expected 'results' array")
+            return []
+        }
+        var searchResults = [SearchResult]()
+
+        for resultDict in array {
+            if let resultDict = resultDict as? [String:AnyObject] {
+                var searchResult: SearchResult?
+                if let wrapperType = resultDict["wrapperType"] as? String {
+                    switch wrapperType {
+                    case "track":
+                        searchResult = parseTrack(resultDict)
+                    default:
+                        break
+                    }
+                }
+                if let result = searchResult {
+                    searchResults.append(result)
+                }
+            }
+        }
+        return searchResults
+    }
+    
+    func parseTrack(dictionary: [String:AnyObject]) -> SearchResult {
+        let searchResult = SearchResult()
+        searchResult.name = dictionary["trackName"] as! String
+        searchResult.artistName = dictionary["artistName"] as! String
+        searchResult.artworkURL60 = dictionary["artworkUrl60"] as! String
+        searchResult.artworkURL100 = dictionary["artworkUrl100"] as! String
+        searchResult.storeURL = dictionary["trackViewUrl"] as! String
+        searchResult.kind = dictionary["kind"] as! String
+        searchResult.currency = dictionary["currency"] as! String
+        if let price = dictionary["trackPrice"] as? Double {
+            searchResult.price = price
+        }
+        if let genre = dictionary["primaryGenreName"] as? String {
+            searchResult.genre = genre
+        }
+        return searchResult
+    }
 
 }
 
 extension SearchViewController: UISearchBarDelegate {
+    
     func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-        searchBar.resignFirstResponder()
-        searchResults = [SearchResult]()
-        hasSearched = true
-        
-        if searchBar.text! != "justin bieber" {
-            for i in 0...2 {
-                let searchResult = SearchResult()
-                searchResult.name = String(format: "Fake Result %d for", i)
-                searchResult.artistName = searchBar.text!
-                searchResults.append(searchResult)
+        if !searchBar.text!.isEmpty {
+            searchBar.resignFirstResponder()
+            searchResults = [SearchResult]()
+            hasSearched = true
+            let url = urlWithSearchText(searchBar.text!)
+            if let jsonString = performStoreRequestWithURL(url) {                
+                if let dictionary = parseJSON(jsonString) {
+                    searchResults = parseDictionary(dictionary)
+                    tableView.reloadData()
+                    return
+                }
             }
+            showNetworkError()
         }
-        tableView.reloadData()
     }
     
     func positionForBar(bar: UIBarPositioning) -> UIBarPosition {
