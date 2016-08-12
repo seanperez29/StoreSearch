@@ -12,6 +12,7 @@ class SearchViewController: UIViewController {
     
     @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var segmentedControl: UISegmentedControl!
     var searchResults = [SearchResult]()
     var hasSearched = false
     var isLoading = false
@@ -33,6 +34,10 @@ class SearchViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    @IBAction func segmentChanged(sender: UISegmentedControl) {
+        print("Segment changed: \(sender.selectedSegmentIndex)")
     }
     
     struct TableViewCellIdentifiers {
