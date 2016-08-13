@@ -50,6 +50,16 @@ class SearchResultCell: UITableViewCell {
         default: return kind
         }
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        downloadTask?.cancel()
+        downloadTask = nil
+        
+        nameLabel.text = nil
+        artistNameLabel.text = nil
+        artworkImageView.image = nil
+    }
 
     override func setSelected(selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
