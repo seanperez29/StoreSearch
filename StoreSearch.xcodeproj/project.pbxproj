@@ -16,6 +16,7 @@
 		91541BEA1D59C3B6001B5FF8 /* SearchResultCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 91541BE91D59C3B6001B5FF8 /* SearchResultCell.xib */; };
 		91541BEC1D59C7BA001B5FF8 /* SearchResultCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91541BEB1D59C7BA001B5FF8 /* SearchResultCell.swift */; };
 		91541BEE1D59CB0D001B5FF8 /* NothingFoundCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 91541BED1D59CB0D001B5FF8 /* NothingFoundCell.xib */; };
+		9193952F1D5DBCAD004D0361 /* UIImageView+DownloadImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9193952E1D5DBCAD004D0361 /* UIImageView+DownloadImage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		91541BE91D59C3B6001B5FF8 /* SearchResultCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SearchResultCell.xib; sourceTree = "<group>"; };
 		91541BEB1D59C7BA001B5FF8 /* SearchResultCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchResultCell.swift; sourceTree = "<group>"; };
 		91541BED1D59CB0D001B5FF8 /* NothingFoundCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NothingFoundCell.xib; sourceTree = "<group>"; };
+		9193952E1D5DBCAD004D0361 /* UIImageView+DownloadImage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView+DownloadImage.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +74,7 @@
 				91541BEB1D59C7BA001B5FF8 /* SearchResultCell.swift */,
 				91541BED1D59CB0D001B5FF8 /* NothingFoundCell.xib */,
 				9111FE1B1D5B33AB003AE65C /* LoadingCell.xib */,
+				9193952E1D5DBCAD004D0361 /* UIImageView+DownloadImage.swift */,
 			);
 			path = StoreSearch;
 			sourceTree = "<group>";
@@ -154,6 +157,7 @@
 				91541BE81D59BAFA001B5FF8 /* SearchResult.swift in Sources */,
 				91541BEC1D59C7BA001B5FF8 /* SearchResultCell.swift in Sources */,
 				91541BD61D598F37001B5FF8 /* AppDelegate.swift in Sources */,
+				9193952F1D5DBCAD004D0361 /* UIImageView+DownloadImage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
