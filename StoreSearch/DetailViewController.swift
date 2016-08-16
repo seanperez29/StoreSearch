@@ -18,6 +18,7 @@ class DetailViewController: UIViewController {
     @IBOutlet weak var genreLabel: UILabel!
     @IBOutlet weak var priceButton: UIButton!
     var searchResult: SearchResult!
+    var downloadTask: NSURLSessionDownloadTask?
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -29,9 +30,15 @@ class DetailViewController: UIViewController {
         dismissViewControllerAnimated(true, completion: nil)
     }
     
+    @IBAction func openInStore() {
+        if let url = NSURL(string: searchResult.storeURL) {
+            UIApplication.sharedApplication().openURL(url)
+        }
+    }
+    
     func updateUI() {
         nameLabel.text = searchResult.name
-        
+
         if searchResult.artistName.isEmpty {
             artistNameLabel.text = "Unknown"
         } else {
@@ -53,8 +60,16 @@ class DetailViewController: UIViewController {
         } else {
             priceText = ""
         }
-        
         priceButton.setTitle(priceText, forState: .Normal)
+        
+        if let url = NSURL(string: searchResult.artworkURL100) {
+            downloadTask = artworkImageView.loadImageWithURL(url)
+        }
+    }
+    
+    deinit {
+        print("deinit \(self)")
+        downloadTask?.cancel()
     }
 
     override func viewDidLoad() {
@@ -67,7 +82,7 @@ class DetailViewController: UIViewController {
         gestureRecognizer.cancelsTouchesInView = false
         gestureRecognizer.delegate = self
         view.addGestureRecognizer(gestureRecognizer)
-        
+    
         if searchResult != nil {
             updateUI()
         }
