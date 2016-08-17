@@ -12,7 +12,10 @@ class LandscapeViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+    }
+    
+    deinit {
+        print("deinit \(self)")
     }
 
 }
