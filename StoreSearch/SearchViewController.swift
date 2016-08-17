@@ -17,6 +17,7 @@ class SearchViewController: UIViewController {
     var hasSearched = false
     var isLoading = false
     var dataTask: NSURLSessionDataTask?
+    var landscapeViewController: LandscapeViewController?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,9 +32,25 @@ class SearchViewController: UIViewController {
         searchBar.becomeFirstResponder()
     }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    override func willTransitionToTraitCollection(newCollection: UITraitCollection, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        super.willTransitionToTraitCollection(newCollection, withTransitionCoordinator: coordinator)
+        switch newCollection.verticalSizeClass {
+        case .Compact:
+            showLandscapeViewWithCoordinator(coordinator)
+        case .Regular, .Unspecified:
+            hideLandscapeViewWithCoordinator(coordinator)
+        }
+    }
+    
+    func showLandscapeViewWithCoordinator(coordinator: UIViewControllerTransitionCoordinator) {
+        precondition(landscapeViewController == nil)
+        landscapeViewController = storyboard!.instantiateViewControllerWithIdentifier("LandscapeViewController") as? LandscapeViewController
+        if let controller = landscapeViewController {
+            controller.view.frame = view.bounds
+            view.addSubview(controller.view)
+            addChildViewController(controller)
+            controller.didMoveToParentViewController(self)
+        }
     }
     
     @IBAction func segmentChanged(sender: UISegmentedControl) {
