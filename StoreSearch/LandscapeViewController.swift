@@ -12,6 +12,8 @@ class LandscapeViewController: UIViewController {
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var pageControl: UIPageControl!
+    var searchResults = [SearchResult]()
+    private var firstTime = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,7 +25,6 @@ class LandscapeViewController: UIViewController {
         pageControl.translatesAutoresizingMaskIntoConstraints = true
         
         scrollView.backgroundColor = UIColor(patternImage: UIImage(named: "LandscapeBackground")!)
-        scrollView.contentSize = CGSize(width: 1000, height: 1000)
     }
     
     override func viewWillLayoutSubviews() {
