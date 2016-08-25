@@ -38,13 +38,17 @@ class LandscapeViewController: UIViewController {
         }
     }
     
-    func tileButtons(searchResults: [SearchResult]) {
+    private func tileButtons(searchResults: [SearchResult]) {
         var columnsPerPage = 5
         var rowsPerPage = 3
         var itemWidth: CGFloat = 96
         var itemHeight: CGFloat = 88
         var marginX: CGFloat = 0
         var marginY: CGFloat = 20
+        let buttonWidth: CGFloat = 82
+        let buttonHeight: CGFloat = 82
+        let paddingHorz = (itemWidth - buttonWidth)/2
+        let paddingVert = (itemHeight - buttonHeight)/2
         
         let scrollViewWidth = scrollView.bounds.size.width
         
@@ -66,6 +70,29 @@ class LandscapeViewController: UIViewController {
         default:
             break
         }
+        
+        var row = 0
+        var column = 0
+        var x = marginX
+        for searchResult in searchResults {
+            let button = UIButton(type: .System)
+            button.backgroundColor = UIColor.whiteColor()
+            button.setTitle("\(index)", forState: .Normal)
+            button.frame = CGRect(x: x + paddingHorz, y: marginY + CGFloat(row)*itemHeight + paddingVert, width: buttonWidth, height: buttonHeight)
+            scrollView.addSubview(button)
+            row += 1
+            if row == rowsPerPage {
+                row = 0; x += itemWidth; column += 1
+                
+                if column == columnsPerPage {
+                    column = 0; x += marginX * 2
+                }
+            }
+        }
+        let buttonsPerPage = rowsPerPage * columnsPerPage
+        let numPages = 1 + (searchResults.count - 1) / buttonsPerPage
+        scrollView.contentSize = CGSize(width: CGFloat(numPages)*scrollViewWidth, height: scrollView.bounds.size.height)
+        print("Number of pages: \(numPages)")
     }
     
     deinit {
