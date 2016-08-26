@@ -25,6 +25,7 @@ class LandscapeViewController: UIViewController {
         pageControl.translatesAutoresizingMaskIntoConstraints = true
         
         scrollView.backgroundColor = UIColor(patternImage: UIImage(named: "LandscapeBackground")!)
+        pageControl.numberOfPages = 0
     }
     
     override func viewWillLayoutSubviews() {
@@ -45,10 +46,6 @@ class LandscapeViewController: UIViewController {
         var itemHeight: CGFloat = 88
         var marginX: CGFloat = 0
         var marginY: CGFloat = 20
-        let buttonWidth: CGFloat = 82
-        let buttonHeight: CGFloat = 82
-        let paddingHorz = (itemWidth - buttonWidth)/2
-        let paddingVert = (itemHeight - buttonHeight)/2
         
         let scrollViewWidth = scrollView.bounds.size.width
         
@@ -70,6 +67,11 @@ class LandscapeViewController: UIViewController {
         default:
             break
         }
+        
+        let buttonWidth: CGFloat = 82
+        let buttonHeight: CGFloat = 82
+        let paddingHorz = (itemWidth - buttonWidth)/2
+        let paddingVert = (itemHeight - buttonHeight)/2
         
         var row = 0
         var column = 0
@@ -93,6 +95,8 @@ class LandscapeViewController: UIViewController {
         let numPages = 1 + (searchResults.count - 1) / buttonsPerPage
         scrollView.contentSize = CGSize(width: CGFloat(numPages)*scrollViewWidth, height: scrollView.bounds.size.height)
         print("Number of pages: \(numPages)")
+        pageControl.numberOfPages = numPages
+        pageControl.currentPage = 0
     }
     
     deinit {
