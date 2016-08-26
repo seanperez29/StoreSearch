@@ -93,9 +93,15 @@
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" pagingEnabled="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cs6-zF-8ie">
                                 <rect key="frame" x="-1" y="1" width="600" height="600"/>
+                                <connections>
+                                    <outlet property="delegate" destination="L0c-Iq-jqW" id="oI7-D5-7L4"/>
+                                </connections>
                             </scrollView>
                             <pageControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="a6j-MI-yWG">
                                 <rect key="frame" x="280" y="500" width="39" height="37"/>
+                                <connections>
+                                    <action selector="pageChanged:" destination="L0c-Iq-jqW" eventType="valueChanged" id="Uc3-XP-gdn"/>
+                                </connections>
                             </pageControl>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
