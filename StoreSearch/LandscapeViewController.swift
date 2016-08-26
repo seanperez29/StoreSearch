@@ -28,6 +28,10 @@ class LandscapeViewController: UIViewController {
         pageControl.numberOfPages = 0
     }
     
+    @IBAction func pageChanged(sender: UIPageControl) {
+        scrollView.contentOffset = CGPoint(x: scrollView.bounds.size.width * CGFloat(sender.currentPage), y: 0)
+    }
+    
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         scrollView.frame = view.bounds
@@ -102,5 +106,12 @@ class LandscapeViewController: UIViewController {
     deinit {
         print("deinit \(self)")
     }
+}
 
+extension LandscapeViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        let width = scrollView.bounds.size.width
+        let currentPage = Int((scrollView.contentOffset.x + width/2)/width)
+        pageControl.currentPage = currentPage
+    }
 }
